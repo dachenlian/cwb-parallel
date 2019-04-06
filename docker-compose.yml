@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+  web:
+    build: .
+    volumes:
+      - cwb-parallel-volume:/cwb
+    restart: always
+    env_file:
+      - web-variables.env
+    container_name: cwb-parallel
+    ports:
+     - "8001:8000"
+
+volumes:
+  cwb-parallel-volume:

@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="row">
+        <h3>Results</h3>
+        {% if not data %}
+            <p>No results found.</p>
+        {% else %}
+            <small>Found {{ len }} results.</small>
+            <table class="striped">
+                {% if alignment %}
+                    <thead>
+                    <tr>
+                        <th>Src</th>
+                        <th>Tgt</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for row in results %}
+                        <tr>
+                            <td>{{ row.0|safe }}</td>
+                            <td>{{ row.1|safe }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                {% else %}
+                    <thead>
+                    <tr>
+                        <th>
+                            Concordance
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for row in results %}
+                        <tr>
+                            <td>
+                                {{ row|safe }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                {% endif %}
+            </table>
+        {% endif %}
+    </div>
+{% endblock content %}

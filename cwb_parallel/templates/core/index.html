@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="row">
+        <h3>Search</h3>
+        <form action="{% url 'core:results' %}" method="get">
+            <div class="col-12">
+                <label>
+                    <input type="text" name="query" required>
+                    <span>Query</span>
+                </label>
+            </div>
+            <div class="col-6">
+                <p class="center-align">
+                    <label>
+                        <input type="radio" value="tw" name="corpus" checked>
+                        <span>Taiwan Mandarin</span>
+                    </label>
+                    <label>
+                        <input type="radio" value="cn" name="corpus">
+                        <span>Mainland Mandarin</span>
+                    </label>
+                </p>
+            </div>
+            <div class="col-12">
+                <p class="center-align">
+                    <label>
+                        <input type="checkbox" name="alignment">
+                        <span>Show alignment?</span>
+                    </label>
+                </p>
+            </div>
+            <div class="col-12">
+                <p class="center-align">
+                    <button type="submit" class="waves-effect waves-light btn">Search</button>
+                </p>
+            </div>
+        </form>
+
+    </div>
+{% endblock content %}
