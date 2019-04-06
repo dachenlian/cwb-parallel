@@ -4,6 +4,7 @@ services:
   web:
     build: .
     volumes:
+      - ./data:/data
       - cwb-parallel-volume:/cwb
     restart: always
     env_file:

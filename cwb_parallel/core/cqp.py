@@ -6,11 +6,11 @@ import pexpect
 
 
 class Cqp:
-    RESULTS_DIR = Path('./results').resolve()
+    RESULTS_DIR = Path('/results').resolve()
     if not RESULTS_DIR.exists():
         RESULTS_DIR.mkdir()
 
-    REGISTRY = '/usr/local/cwb-3.4.15/share/cwb/registry'
+    REGISTRY = '/cwb/registry'
 
     def __init__(self, query_cmd, corpus, alignment=True, usr_registry=None):
         self.query_cmd = query_cmd

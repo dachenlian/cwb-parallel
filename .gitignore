@@ -277,4 +277,6 @@ modules.xml
 
 # Pyre type checker
 
+*.vrt
+*beadfile.txt
 # End of https://www.gitignore.io/api/django,python,pycharm+all
