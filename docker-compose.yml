@@ -11,7 +11,7 @@ services:
       - web-variables.env
     container_name: cwb-parallel
     ports:
-     - "8001:8000"
+     - "8003:8000"
 
 volumes:
   cwb-parallel-volume:
