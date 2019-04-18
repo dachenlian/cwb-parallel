@@ -22,10 +22,10 @@ class Cqp:
         self._src = None
         self._tgt = None
         if self.alignment:
-            if self.corpus == 'tw':
-                self.aligned_corpus = 'cn'
-            elif self.corpus == 'cn':
-                self.aligned_corpus = 'tw'
+            if self.corpus == 'tm':
+                self.aligned_corpus = 'mm'
+            elif self.corpus == 'mm':
+                self.aligned_corpus = 'tm'
             else:
                 self.aligned_corpus = None
 
