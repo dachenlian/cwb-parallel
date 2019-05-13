@@ -13,6 +13,7 @@ django-debug-toolbar = "*"
 django-extensions = "*"
 ipython = "*"
 gunicorn = "*"
+requests = "*"
 
 [requires]
 python_version = "3.7"

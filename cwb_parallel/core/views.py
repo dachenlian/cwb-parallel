@@ -1,14 +1,20 @@
-from django.shortcuts import render
+import logging
+import requests
+
+from django.shortcuts import render, redirect, reverse
 from django.views.generic import View, TemplateView
 
 from .cqp import Cqp
+
+
+logger = logging.getLogger()
 
 
 class IndexView(TemplateView):
     template_name = 'core/index.html'
 
 
-class ResultsView(View):
+class ConcordanceView(View):
     template_name = 'core/results.html'
 
     def get(self, request, *args, **kwargs):
@@ -39,3 +45,13 @@ class ResultsView(View):
             }
         return render(self.request, self.template_name, context=context)
 
+
+def translation(request):
+    source = request.POST.get('translate-box')
+    json = {
+        'id': 100,
+        'src': source
+    }
+    r = requests.post('http://140.112.147.121/translator/translate', json=json)
+    print(r.json())
+    return redirect(reverse('core:index'))

@@ -1,8 +1,8 @@
 {% extends 'base.html' %}
 {% block content %}
     <div class="row">
-        <h3>Search</h3>
-        <form action="{% url 'core:results' %}" method="get">
+        <h3>Concordance</h3>
+        <form action="{% url 'core:concordance' %}" method="get">
             <div class="col-12">
                 <label>
                     <input type="text" name="query" required>
@@ -35,6 +35,16 @@
                 </p>
             </div>
         </form>
-
+    </div>
+    <div class="row">
+    <h3>Machine Translation</h3>
+        <form action="{% url 'core:translate' %}" method="post">
+            {% csrf_token %}
+            <div class="input-field col s12">
+                <textarea name="translate-box" id="translate-tw" cols="30" rows="10"></textarea>
+                <label for="translate-tw">Taiwan Mandarin</label>
+            </div>
+            <button type="submit" class="waves-effect waves-light btn">Search</button>
+        </form>
     </div>
 {% endblock content %}
