@@ -281,4 +281,5 @@ modules.xml
 *beadfile.txt
 *.env
 *.zip
+*/staticfiles/*
 # End of https://www.gitignore.io/api/django,python,pycharm+all

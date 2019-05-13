@@ -1,11 +1,11 @@
 import logging
+import json
 import requests
 
 from django.shortcuts import render, redirect, reverse
 from django.views.generic import View, TemplateView
 
 from .cqp import Cqp
-
 
 logger = logging.getLogger()
 
@@ -48,10 +48,20 @@ class ConcordanceView(View):
 
 def translation(request):
     source = request.POST.get('translate-box')
-    json = {
+    source = " ".join(list(source))
+
+    print(source)
+    data = [{
         'id': 100,
         'src': source
+    }]
+
+    data = json.dumps(data, ensure_ascii=False).encode('utf-8')
+
+    r = requests.post('http://140.112.147.125:5000/translator/translate', data=data).json()[0][0]
+    target = "".join(r.get('tgt').split(' '))
+
+    context = {
+        'target': target
     }
-    r = requests.post('http://140.112.147.121/translator/translate', json=json)
-    print(r.json())
-    return redirect(reverse('core:index'))
+    return render(request, 'core/index.html', context=context)
