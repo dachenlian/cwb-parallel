@@ -8,5 +8,5 @@ app_name = 'core'
 urlpatterns = [
     path('', views.IndexView.as_view(), name='index'),
     path('results/', views.ConcordanceView.as_view(), name='concordance'),
-    path('translate/', views.translation, name='translate')
+    path('translate/', views.TranslationView.as_view(), name='translation')
 ]

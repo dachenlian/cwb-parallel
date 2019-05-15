@@ -3,9 +3,9 @@
     <div class="row">
         <h3>Results</h3>
         {% if not data %}
-            <p>No results found.</p>
+            <p>No results found for {{ query }}.</p>
         {% else %}
-            <small>Found {{ len }} results.</small>
+            <small>Found {{ len }} results for {{ query }}.</small>
             <table class="striped">
                 {% if alignment %}
                     <thead>

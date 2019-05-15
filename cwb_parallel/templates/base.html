@@ -17,7 +17,11 @@
 <div class="navbar-fixed">
     <nav class="blue-grey darken-4">
         <div class="nav-wrapper">
-            <a href="{% url 'core:index' %}" class="brand-logo center">Chinese Variation</a>
+            <a href="{% url 'core:index' %}" class="brand-logo">Chinese Variation</a>
+            <ul class="right hide-on-med-and-down">
+                <li><a href="{% url 'core:index' %}">Concordance</a></li>
+                <li><a href="{% url 'core:translation' %}">Translation</a></li>
+            </ul>
         </div>
     </nav>
 </div>

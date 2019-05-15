@@ -25,7 +25,8 @@ class ConcordanceView(View):
         cqp = Cqp(query_cmd=query, corpus=corpus, alignment=alignment)
         if cqp.results:
             context = {
-                'data': True
+                'data': True,
+                'query': query,
             }
             if alignment:
                 context.update({
@@ -41,27 +42,37 @@ class ConcordanceView(View):
                 })
         else:
             context = {
-                'data': False
+                'data': False,
+                'query': query,
             }
         return render(self.request, self.template_name, context=context)
 
 
-def translation(request):
-    source = request.POST.get('translate-box')
-    source = " ".join(list(source))
+class TranslationView(View):
+    template_name = 'core/translation.html'
 
-    print(source)
-    data = [{
-        'id': 100,
-        'src': source
-    }]
+    def get(self, request, *args, **kwargs):
+        return render(self.request, self.template_name)
 
-    data = json.dumps(data, ensure_ascii=False).encode('utf-8')
+    def post(self, request, *args, **kwargs):
 
-    r = requests.post('http://140.112.147.125:5000/translator/translate', data=data).json()[0][0]
-    target = "".join(r.get('tgt').split(' '))
+        source = self.request.POST.get('translate-box')
+        source = " ".join(list(source))
 
-    context = {
-        'target': target
-    }
-    return render(request, 'core/index.html', context=context)
+        print(source)
+        data = [{
+            'id': 100,
+            'src': source
+        }]
+
+        data = json.dumps(data, ensure_ascii=False).encode('utf-8')
+
+        r = requests.post('http://140.112.147.125:5000/translator/translate', data=data).json()[0][0]
+        target = "".join(r.get('tgt').split(' '))
+
+        context = {
+            'source': self.request.POST.get('translate-box'),
+            'target': target
+        }
+
+        return render(request, self.template_name, context=context)

@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="row">
+        <h3>Machine Translation</h3>
+        <form class="col s12" action="{% url 'core:translation' %}" method="post">
+            {% csrf_token %}
+            <div class="row">
+                <div class="input-field col s12">
+                    <textarea name="translate-box" id="translate-tw" cols="30" rows="10">{% if source %}{{ source }}{% endif %}</textarea>
+                    <label for="translate-tw">Taiwan Mandarin</label>
+                </div>
+            </div>
+            <p class="center-align">
+                <button type="submit" class="waves-effect waves-light btn">Search</button>
+            </p>
+        </form>
+        {% if target %}
+            <h4>Result</h4>
+            <div class="row">
+                <div class="input-field col s12">
+                    <textarea id="translate-mw" cols="30" rows="10">{{ target }}</textarea>
+                    <label for="translate-mw">Mainland Mandarin</label>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+{% endblock content %}
