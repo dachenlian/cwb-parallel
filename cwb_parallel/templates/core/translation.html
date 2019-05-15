@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
     <div class="row">
-        <h3>Machine Translation</h3>
+        <h3>Translation</h3>
         <form class="col s12" action="{% url 'core:translation' %}" method="post">
             {% csrf_token %}
             <div class="row">
