@@ -1,25 +1,40 @@
 {% extends 'base.html' %}
 {% block content %}
     <div class="row">
-        <h3>Machine Translation</h3>
+        <h3>Translation</h3>
         <form class="col s12" action="{% url 'core:translation' %}" method="post">
             {% csrf_token %}
             <div class="row">
                 <div class="input-field col s12">
-                    <textarea name="translate-box" id="translate-tw" cols="30" rows="10">{% if source %}{{ source }}{% endif %}</textarea>
-                    <label for="translate-tw">Taiwan Mandarin</label>
+                    <textarea class="materialize-textarea center-align" name="translate-src" id="translate-source"
+                              cols="30" rows="10">{% if source %}{{ source }}{% endif %}</textarea>
+                    <label for="translate-source">Source</label>
                 </div>
             </div>
+            <div class="col-6">
+                <p class="center-align">
+                    <label>
+                        <input type="radio" value="tm2mm" name="trans-direction" checked>
+                        <span>TM to MM</span>
+                    </label>
+                    <label>
+                        <input type="radio" value="mm2tm" name="trans-direction">
+                        <span>MM to TM</span>
+                    </label>
+                </p>
+            </div>
             <p class="center-align">
-                <button type="submit" class="waves-effect waves-light btn">Search</button>
+                <button type="submit" class="waves-effect waves-light btn">{% if target %}New Search {% else %}
+                    Search{% endif %}</button>
             </p>
         </form>
         {% if target %}
             <h4>Result</h4>
             <div class="row">
                 <div class="input-field col s12">
-                    <textarea id="translate-mw" cols="30" rows="10">{{ target }}</textarea>
-                    <label for="translate-mw">Mainland Mandarin</label>
+                    <textarea class="materialize-textarea center-align" id="translate-target" cols="30" rows="10"
+                              disabled>{{ target }}</textarea>
+                    <label for="translate-target">Target</label>
                 </div>
             </div>
         {% endif %}

@@ -60,12 +60,17 @@ class TranslationView(View):
 
     def post(self, request, *args, **kwargs):
 
-        source = self.request.POST.get('translate-box')
+        source = self.request.POST.get('translate-src')
         source = " ".join(list(source))
+        trans_direction = self.request.POST.get('trans-direction')
+        if trans_direction == 'tm2mm':
+            model_id = 100
+        else:
+            model_id = 101
 
         print(source)
         data = [{
-            'id': 100,
+            'id': model_id,
             'src': source
         }]
 
@@ -75,7 +80,7 @@ class TranslationView(View):
         target = "".join(r.get('tgt').split(' '))
 
         context = {
-            'source': self.request.POST.get('translate-box'),
+            'source': self.request.POST.get('translate-src'),
             'target': target
         }
 
