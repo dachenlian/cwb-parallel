@@ -2,45 +2,53 @@
 {% block content %}
     <div class="row">
         <h3>Results</h3>
-        {% if not data %}
-            <p>No results found for {{ query }}.</p>
-        {% else %}
-            <small>Found {{ len }} results for {{ query }}.</small>
-            <table class="striped">
-                {% if alignment %}
-                    <thead>
-                    <tr>
-                        <th>Src</th>
-                        <th>Tgt</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for row in results %}
+        <div class="col s6">
+            <label>
+                Filter
+                <input type="text">
+            </label>
+        </div>
+        <div class="col s12">
+            {% if not data %}
+                <p>No results found for {{ query }}.</p>
+            {% else %}
+                <small>Found {{ len }} results for {{ query }}.</small>
+                <table class="striped">
+                    {% if alignment %}
+                        <thead>
                         <tr>
-                            <td>{{ row.0|safe }}</td>
-                            <td>{{ row.1|safe }}</td>
+                            <th>Src</th>
+                            <th>Tgt</th>
                         </tr>
-                    {% endfor %}
-                    </tbody>
-                {% else %}
-                    <thead>
-                    <tr>
-                        <th>
-                            Concordance
-                        </th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for row in results %}
+                        </thead>
+                        <tbody>
+                        {% for row in results %}
+                            <tr>
+                                <td>{{ row.0|safe }}</td>
+                                <td>{{ row.1|safe }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    {% else %}
+                        <thead>
                         <tr>
-                            <td>
-                                {{ row|safe }}
-                            </td>
+                            <th>
+                                Concordance
+                            </th>
                         </tr>
-                    {% endfor %}
-                    </tbody>
-                {% endif %}
-            </table>
-        {% endif %}
+                        </thead>
+                        <tbody>
+                        {% for row in results %}
+                            <tr>
+                                <td>
+                                    {{ row|safe }}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    {% endif %}
+                </table>
+            {% endif %}
+        </div>
     </div>
 {% endblock content %}

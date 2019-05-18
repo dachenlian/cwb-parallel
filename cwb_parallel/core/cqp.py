@@ -29,7 +29,7 @@ class Cqp:
             else:
                 self.aligned_corpus = None
 
-    def __str__(self):
+    def __repr__(self):
         return f'Cqp(query_cmd={self.query_cmd}, corpus={self.corpus}, alignment={self.alignment}, usr_registry={self.usr_registry})'
 
     def __len__(self):
@@ -52,7 +52,7 @@ class Cqp:
             f'{self.corpus.upper()};',
             'set Context 1 text;',
             f'show -cpos;',  # corpus position
-            f"""'{self.query_cmd}';""",
+            f"""{self.query_cmd};""",
             f"cat > '{fpath}';",
         ]
         if self.alignment:
@@ -63,7 +63,7 @@ class Cqp:
         for c in commands:
             q.sendline(c)
 
-        time.sleep(4)
+        time.sleep(5)
         # print('First expect')
         # q.expect(commands[-1])  # match last line
         # q.expect(f'{self.corpus.upper()}>')  # then match prompt after 'cat' command to ensure cmd finished

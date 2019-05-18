@@ -2,15 +2,28 @@
 {% block content %}
     <div class="row">
         <h3>Concordance</h3>
-        <form action="{% url 'core:concordance' %}" method="get">
-            <div class="col-12">
-                <label>
-                    <input type="text" name="query" required>
-                    <span>Query</span>
-                </label>
-            </div>
-            <div class="col-6">
-                <p class="center-align">
+        <div class="col s12 m6">
+            <h5>Search</h5>
+            <form action="{% url 'core:concordance' %}" method="get">
+                <div class="col s12">
+                    <label>
+                        <input type="text" name="query" required>
+                        <span>Query</span>
+                    </label>
+                </div>
+                <div class="col s12">
+                    <p>Search Type</p>
+                    <label>
+                        <input name="search-mode" value="simple" type="radio" checked>
+                        <span>Simple</span>
+                    </label>
+                    <label>
+                        <input name="search-mode" value="cql" type="radio">
+                        <span>Corpus Query Language</span>
+                    </label>
+                </div>
+                <div class="col s12">
+                    <p>Mandarin Variety</p>
                     <label>
                         <input type="radio" value="tm" name="corpus" checked>
                         <span>Taiwan Mandarin</span>
@@ -19,21 +32,36 @@
                         <input type="radio" value="mm" name="corpus">
                         <span>Mainland Mandarin</span>
                     </label>
-                </p>
-            </div>
-            <div class="col-12">
-                <p class="center-align">
-                    <label>
-                        <input type="checkbox" name="alignment">
-                        <span>Show alignment?</span>
-                    </label>
-                </p>
-            </div>
-            <div class="col-12">
-                <p class="center-align">
-                    <button type="submit" class="waves-effect waves-light btn">Search</button>
-                </p>
-            </div>
-        </form>
+                </div>
+                <div class="col s12">
+                    <p>Show Alignment</p>
+                    <div class="switch">
+                        <label>
+                            Off
+                            <input name="alignment" type="checkbox">
+                            <span class="lever"></span>
+                            On
+                        </label>
+                    </div>
+                </div>
+                <div class="col s12">
+                    <p class="center-align">
+                        <button type="submit" class="waves-effect waves-light btn">Search</button>
+                    </p>
+                </div>
+            </form>
+        </div>
+        <div class="col s12 m6">
+            <h5>Help</h5>
+            <p>Search Type</p>
+            <p><strong>Simple:</strong> Search for a single keyword</p>
+            <p><strong>Corpus Query Language:</strong> Use CQL syntax for complex searches</p>
+            <div class="divider"></div>
+            <p>Mandarin Variety</p>
+            <p><strong>Taiwan Mandarin: </strong>Show results from Taiwan Mandarin corpus</p>
+            <p><strong>Mainland Mandarin: </strong>Show results from Mainland Mandarin corpus</p>
+            <div class="divider"></div>
+            <p><strong>Show alignment: </strong>Show corresponding alignment for query results</p>
+        </div>
     </div>
 {% endblock content %}

@@ -21,6 +21,10 @@ class ConcordanceView(View):
         query = self.request.GET.get('query')
         corpus = self.request.GET.get('corpus')
         alignment = self.request.GET.get('alignment')
+        search_mode = self.request.GET.get('search-mode')
+
+        if search_mode == 'simple':
+            query = f"""'{query}'"""
 
         cqp = Cqp(query_cmd=query, corpus=corpus, alignment=alignment)
         if cqp.results:
