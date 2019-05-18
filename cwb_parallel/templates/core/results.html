@@ -5,8 +5,28 @@
         <div class="col s6">
             <label>
                 Filter
-                <input type="text">
+                <input id="filter-box" type="text">
             </label>
+            <p>Show only results that contain filter keyword in</p>
+            <p>
+                <label>
+                    <input value="both" name="filter" type="radio" checked/>
+                    <span>Both</span>
+                </label>
+            </p>
+            <p>
+                <label>
+                    <input value="src" name="filter" type="radio"/>
+                    <span>Src</span>
+                </label>
+            </p>
+            <p>
+                <label>
+                    <input value="tgt" name="filter" type="radio"/>
+                    <span>Tgt</span>
+                </label>
+            </p>
+            <button id="filter-button" class="btn waves-effect waves-light">Update</button>
         </div>
         <div class="col s12">
             {% if not data %}
@@ -24,8 +44,8 @@
                         <tbody>
                         {% for row in results %}
                             <tr>
-                                <td>{{ row.0|safe }}</td>
-                                <td>{{ row.1|safe }}</td>
+                                <td class="src-col">{{ row.0|safe }}</td>
+                                <td class="tgt-col">{{ row.1|safe }}</td>
                             </tr>
                         {% endfor %}
                         </tbody>
@@ -52,3 +72,46 @@
         </div>
     </div>
 {% endblock content %}
+
+{% block javascript %}
+    <script>
+        const filterRows = function (filterWord, filterSetting) {
+            const rows = $('tbody tr');
+            for (const row of rows) {
+                row.style.visibility = "visible";
+            }
+            for (const row of rows) {
+                const src = row.querySelector('.src-col').textContent;
+                const tgt = row.querySelector('.tgt-col').textContent;
+                if (filterSetting === 'both') {
+                    if (!(src.includes(filterWord) && tgt.includes(filterWord))) {
+                        row.style.visibility = "hidden";
+                    }
+                } else if (filterSetting === 'src') {
+                    if (!src.includes(filterWord)) {
+                        row.style.visibility = "hidden";
+                    }
+                } else if (filterSetting === 'tgt') {
+                    if (!tgt.includes(filterWord)) {
+                        row.style.visibility = "hidden";
+                    }
+                }
+            }
+        };
+
+        $("#filter-box").change(function () {
+            const filterSetting = $("input[name='filter']:checked").val();
+            const filterWord = this.value;
+            if (filterWord) {
+                filterRows(filterWord, filterSetting);
+            }
+        });
+        $("#filter-button").click(function () {
+            const filterSetting = $("input[name='filter']:checked").val();
+            const filterWord = $('#filter-box').value;
+            if (filterWord) {
+                filterRows(filterWord, filterSetting);
+            }
+        })
+    </script>
+{% endblock javascript %}
