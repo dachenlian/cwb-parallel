@@ -75,25 +75,29 @@
 
 {% block javascript %}
     <script>
+    const resetRows = function() {
+        const rows = $('tbody tr');
+        for (const row of rows) {
+            row.style.display = "table-row"
+        }
+    };
         const filterRows = function (filterWord, filterSetting) {
             const rows = $('tbody tr');
-            for (const row of rows) {
-                row.style.visibility = "visible";
-            }
+            resetRows();
             for (const row of rows) {
                 const src = row.querySelector('.src-col').textContent;
                 const tgt = row.querySelector('.tgt-col').textContent;
                 if (filterSetting === 'both') {
                     if (!(src.includes(filterWord) && tgt.includes(filterWord))) {
-                        row.style.visibility = "hidden";
+                        row.style.display = "none";
                     }
                 } else if (filterSetting === 'src') {
                     if (!src.includes(filterWord)) {
-                        row.style.visibility = "hidden";
+                        row.style.display = "none";
                     }
                 } else if (filterSetting === 'tgt') {
                     if (!tgt.includes(filterWord)) {
-                        row.style.visibility = "hidden";
+                        row.style.display = "none";
                     }
                 }
             }
@@ -102,15 +106,21 @@
         $("#filter-box").change(function () {
             const filterSetting = $("input[name='filter']:checked").val();
             const filterWord = this.value;
+            console.log(filterWord, filterSetting);
             if (filterWord) {
                 filterRows(filterWord, filterSetting);
+            } else {
+                resetRows();
             }
         });
         $("#filter-button").click(function () {
             const filterSetting = $("input[name='filter']:checked").val();
-            const filterWord = $('#filter-box').value;
+            const filterWord = $('#filter-box').val();
+            console.log(filterWord, filterSetting);
             if (filterWord) {
                 filterRows(filterWord, filterSetting);
+            } else {
+                resetRows();
             }
         })
     </script>
