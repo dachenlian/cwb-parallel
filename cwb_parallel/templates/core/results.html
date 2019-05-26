@@ -17,13 +17,13 @@
             <p>
                 <label>
                     <input value="src" name="filter" type="radio"/>
-                    <span>Src</span>
+                    <span>Source</span>
                 </label>
             </p>
             <p>
                 <label>
                     <input value="tgt" name="filter" type="radio"/>
-                    <span>Tgt</span>
+                    <span>Target</span>
                 </label>
             </p>
             <button id="filter-button" class="btn waves-effect waves-light">Update</button>
@@ -32,18 +32,20 @@
             {% if not data %}
                 <p>No results found for {{ query }}.</p>
             {% else %}
-                <small>Found {{ len }} results for {{ query }}.</small>
+                <small>Found <span id="totalCount">{{ len }}</span> results for {{ query }}.</small>
                 <table class="striped">
                     {% if alignment %}
                         <thead>
                         <tr>
-                            <th>Src</th>
-                            <th>Tgt</th>
+                            <th>#</th>
+                            <th>Source</th>
+                            <th>Target</th>
                         </tr>
                         </thead>
                         <tbody>
                         {% for row in results %}
                             <tr>
+                                <td>{{ forloop.counter }}</td>
                                 <td class="src-col">{{ row.0|safe }}</td>
                                 <td class="tgt-col">{{ row.1|safe }}</td>
                             </tr>
@@ -75,12 +77,15 @@
 
 {% block javascript %}
     <script>
-    const resetRows = function() {
-        const rows = $('tbody tr');
-        for (const row of rows) {
-            row.style.display = "table-row"
-        }
-    };
+        const addRowNums = function () {
+            let counter = 1;
+            $('tbody tr').each(function (idx, val) {
+                if (val.style.display === "table-row") {
+                    $(this).children(":eq(0)").html(counter++);
+                }
+            })
+        };
+
         const filterRows = function (filterWord, filterSetting) {
             const rows = $('tbody tr');
             resetRows();
@@ -103,14 +108,31 @@
             }
         };
 
+        const resetRows = function () {
+            const rows = $('tbody tr');
+            for (const row of rows) {
+                row.style.display = "table-row"
+            }
+        };
+
+        const updateTotalCount = function() {
+            const totalSpan = $("#totalCount");
+            const total = $("tr[style*='display: table-row;']").length;
+            totalSpan.text(total)
+        };
+
         $("#filter-box").change(function () {
             const filterSetting = $("input[name='filter']:checked").val();
             const filterWord = this.value;
             console.log(filterWord, filterSetting);
             if (filterWord) {
                 filterRows(filterWord, filterSetting);
+                addRowNums();
+                updateTotalCount();
             } else {
                 resetRows();
+                addRowNums();
+                updateTotalCount();
             }
         });
         $("#filter-button").click(function () {
@@ -119,8 +141,12 @@
             console.log(filterWord, filterSetting);
             if (filterWord) {
                 filterRows(filterWord, filterSetting);
+                addRowNums();
+                updateTotalCount();
             } else {
                 resetRows();
+                addRowNums();
+                updateTotalCount();
             }
         })
     </script>
