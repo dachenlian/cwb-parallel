@@ -28,13 +28,19 @@
                     Search{% endif %}</button>
             </p>
         </form>
-        {% if target %}
+        {% if target_rnn %}
             <h4>Result</h4>
             <div class="row">
                 <div class="input-field col s12">
-                    <textarea class="materialize-textarea center-align" id="translate-target" cols="30" rows="10"
-                              disabled>{{ target }}</textarea>
-                    <label for="translate-target">Target</label>
+                    <textarea class="materialize-textarea center-align" id="translate-target-rnn" cols="30" rows="10"
+                              disabled>{{ target_rnn }}</textarea>
+                    <label for="translate-target-rnn">Target (RNN)</label>
+                </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <textarea class="materialize-textarea center-align" id="translate-target-rnn" cols="30" rows="10"
+                              disabled>{{ target_transformer }}</textarea>
+                    <label for="translate-target-transformer">Target (Transformer)</label>
                 </div>
             </div>
         {% endif %}

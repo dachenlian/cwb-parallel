@@ -63,25 +63,29 @@ class TranslationView(View):
         source = self.request.POST.get('translate-src')
         source = " ".join(list(source))
         trans_direction = self.request.POST.get('trans-direction')
-        if trans_direction == 'tm2mm':
-            model_id = 100
-        else:
-            model_id = 101
-
-        print(source)
-        data = [{
-            'id': model_id,
-            'src': source
-        }]
-
-        data = json.dumps(data, ensure_ascii=False).encode('utf-8')
-
-        r = requests.post('http://140.112.147.125:5000/translator/translate', data=data).json()[0][0]
-        target = "".join(r.get('tgt').split(' '))
 
         context = {
             'source': self.request.POST.get('translate-src'),
-            'target': target
         }
+        model_names = ['target_rnn', 'target_transformer']
+
+        if trans_direction == 'tm2mm':
+            model_id = [100, 200]
+        else:
+            model_id = [101, 201]
+
+        print(source)
+        for name, model in zip(model_names, model_id):
+            data = [{
+                'id': model,
+                'src': source
+            }]
+
+            data = json.dumps(data, ensure_ascii=False).encode('utf-8')
+
+            r = requests.post('http://140.112.147.125:5000/translator/translate', data=data).json()[0][0]
+            target = "".join(r.get('tgt').split(' '))
+
+            context.update({name: target})
 
         return render(request, self.template_name, context=context)
