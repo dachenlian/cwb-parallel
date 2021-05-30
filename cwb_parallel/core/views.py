@@ -83,7 +83,7 @@ class TranslationView(View):
 
             data = json.dumps(data, ensure_ascii=False).encode('utf-8')
 
-            r = requests.post('http://140.112.147.125:5000/translator/translate', data=data).json()[0][0]
+            r = requests.post('http://140.112.147.132:5000/translator/translate', data=data).json()[0][0]
             target = "".join(r.get('tgt').split(' '))
 
             context.update({name: target})
