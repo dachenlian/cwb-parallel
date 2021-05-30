@@ -66,22 +66,23 @@ def save_output(out_path: Path, obj: Union[List[str], List[NerToken]]) -> None:
 
 def run_pipeline(sents: List[str], out_path_base: Path, batch_size=64, max_length=509) -> Tuple[List[str], List[str], List[str]]:
     word_sentence_list = ws(sents, batch_size=batch_size, max_length=max_length, use_delim=True)
-    save_output(out_path_base.joinpath('_segmented.json'), word_sentence_list)
+    save_output(out_path_base.joinpath('segmented.json'), word_sentence_list)
 
     pos_sentence_list = pos(word_sentence_list, batch_size=batch_size, max_length=max_length, use_delim=True)
-    save_output(out_path_base.joinpath('_pos.json'), pos_sentence_list)
+    save_output(out_path_base.joinpath('pos.json'), pos_sentence_list)
 
     del word_sentence_list
     del pos_sentence_list
 
     entity_sentence_list = ner(sents, batch_size=batch_size, max_length=max_length, use_delim=True)
-    save_output(out_path_base.joinpath('_entity.json'), entity_sentence_list)
+    save_output(out_path_base.joinpath('entity.json'), entity_sentence_list)
     
     return word_sentence_list, pos_sentence_list, entity_sentence_list
 
 
 if __name__ == '__main__':
     args = parse_args()
+    args.output_path.mkdir(exist_ok=True)
 
     ws = CkipWordSegmenter(level=args.model_level, device=args.device)
     pos = CkipPosTagger(level=args.model_level, device=args.device)
