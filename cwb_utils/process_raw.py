@@ -6,6 +6,7 @@ from typing import List, Tuple, Union
 from bs4 import BeautifulSoup as bs
 from ckip_transformers.nlp import CkipWordSegmenter, CkipPosTagger, CkipNerChunker
 from ckip_transformers.nlp.util import NerToken
+import opencc
 
 
 def parse_args() -> Namespace:
@@ -19,6 +20,11 @@ def parse_args() -> Namespace:
         'output_path',
         help='Path to processed files',
         type=Path
+    )
+    parser.add_argument(
+        '--to_traditional',
+        help='Convert to Traditional Chinese before inference',
+        action='store_true'
     )
     parser.add_argument(
         '--model_level',
@@ -86,6 +92,9 @@ if __name__ == '__main__':
 
     texts = xml.findAll('text')
     sent_list = [t.text.replace('\n', '') for t in texts]
+    if args.to_traditional:
+        converter = opencc.OpenCC('s2t.json')
+        sent_list = [converter.convert(t) for t in sent_list]
 
     del xml
     del texts
