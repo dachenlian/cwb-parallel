@@ -39,7 +39,7 @@ def parse_args() -> Namespace:
     parser.add_argument(
         '--split_file_chunks',
         help='Run inference piecemeal to ensure memory is not used completely',
-        default=500_000
+        default=250_000
     )
     parser.add_argument(
         '--to_traditional',
@@ -130,7 +130,7 @@ def run_pipeline(out_path_base: Path, sents: Optional[List[str]] = None, word_se
         print('Running NER...')
         ner = CkipNerChunker(level=args.ner_model_level, device=args.device)
 
-        for c in tqdm(chunk(word_sentence_list, args.split_file_chunks), total=tqdm_total, desc="Chunk"):
+        for c in tqdm(chunk(sents, args.split_file_chunks), total=tqdm_total, desc="Chunk"):
             entity_sentence_list = ner(c, batch_size=batch_size, max_length=max_length, use_delim=True)
             save_output(out_path_base.joinpath(f'entity_{counter}.json'), entity_sentence_list)
             counter += 1
