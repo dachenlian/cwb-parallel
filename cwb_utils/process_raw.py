@@ -61,7 +61,7 @@ def parse_args() -> Namespace:
         '--batch_size',
         help='Size of batch to be input into transformer models',
         type=int,
-        default=512
+        default=256
     )
     parser.add_argument(
         '--max_length',
