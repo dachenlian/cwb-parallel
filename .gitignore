@@ -285,3 +285,5 @@ modules.xml
 # End of https://www.gitignore.io/api/django,python,pycharm+all
 
 .vscode/**/*
+**/tm
+**/mm
