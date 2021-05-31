@@ -287,3 +287,4 @@ modules.xml
 .vscode/**/*
 **/tm
 **/mm
+**/notebooks
