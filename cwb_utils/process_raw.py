@@ -127,8 +127,8 @@ def run_pipeline(out_path_base: Path, sents: Optional[List[str]] = None, word_se
             save_output(out_path_base.joinpath(f'pos_{counter}.json'), pos_sentence_list)
             counter += 1
 
-    del word_sentence_list
-    del pos_sentence_list
+        del word_sentence_list
+        del pos_sentence_list
 
     if 'ner' in args.tasks:
         counter = 0
