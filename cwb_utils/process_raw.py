@@ -62,7 +62,8 @@ def parse_args() -> Namespace:
         '--ner_model_level',
         help='Choose which model to use for NER (1: albert-tiny, 2: albert-base, 3: bert-base)',
         choices=[1, 2, 3],
-        default=1
+        type=int,
+        default=2
     )
     parser.add_argument(
         '--batch_size',
