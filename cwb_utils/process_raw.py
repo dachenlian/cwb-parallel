@@ -63,7 +63,7 @@ def parse_args() -> Namespace:
         help='Choose which model to use for NER (1: albert-tiny, 2: albert-base, 3: bert-base)',
         choices=[1, 2, 3],
         type=int,
-        default=2
+        default=1
     )
     parser.add_argument(
         '--batch_size',
@@ -103,7 +103,11 @@ def save_output(out_path: Path, obj: Union[List[str], List[NerToken]]) -> None:
 
 
 def run_pipeline(out_path_base: Path, sents: Optional[List[str]] = None, word_sentence_list: Optional[List[List[str]]] = None, batch_size=64, max_length=509) -> None:
-    tqdm_total = -(-len(word_sentence_list) // args.split_file_chunks)
+    if sents:
+        tqdm_total = -(-len(sents) // args.split_file_chunks)
+    elif word_sentence_list:
+        tqdm_total = -(-len(word_sentence_list) // args.split_file_chunks)
+
     if 'ws' in args.tasks:
         if word_sentence_list:
             print('Tokenized sentences already provided. Skipping tokenization.')
