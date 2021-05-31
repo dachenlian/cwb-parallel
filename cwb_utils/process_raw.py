@@ -1,4 +1,5 @@
 from argparse import ArgumentParser, Namespace
+from itertools import islice
 import json
 from pathlib import Path
 from typing import List, Tuple, Union, Optional
@@ -7,6 +8,7 @@ from bs4 import BeautifulSoup as bs
 from ckip_transformers.nlp import CkipWordSegmenter, CkipPosTagger, CkipNerChunker
 from ckip_transformers.nlp.util import NerToken
 import opencc
+from tqdm import tqdm
 
 
 def parse_args() -> Namespace:
@@ -33,6 +35,11 @@ def parse_args() -> Namespace:
         help='Load already tokenized file for downstream task (POS tagging)',
         type=Path,
         default=None
+    )
+    parser.add_argument(
+        '--split_file_chunks',
+        help='Run inference piecemeal to ensure memory is not used completely',
+        default=500_000
     )
     parser.add_argument(
         '--to_traditional',
@@ -82,6 +89,11 @@ def parse_args() -> Namespace:
     return args
 
 
+def chunk(it, size):
+    it = iter(it)
+    return iter(lambda: tuple(islice(it, size)), ())
+
+
 def save_output(out_path: Path, obj: Union[List[str], List[NerToken]]) -> None:
     with out_path.open('w') as f:
         json.dump(obj, f, ensure_ascii=False, indent=4)
@@ -90,6 +102,7 @@ def save_output(out_path: Path, obj: Union[List[str], List[NerToken]]) -> None:
 
 
 def run_pipeline(out_path_base: Path, sents: Optional[List[str]] = None, word_sentence_list: Optional[List[List[str]]] = None, batch_size=64, max_length=509) -> None:
+    tqdm_total = -(-len(word_sentence_list) // args.split_file_chunks)
     if 'ws' in args.tasks:
         if word_sentence_list:
             print('Tokenized sentences already provided. Skipping tokenization.')
@@ -100,19 +113,27 @@ def run_pipeline(out_path_base: Path, sents: Optional[List[str]] = None, word_se
             save_output(out_path_base.joinpath('segmented.json'), word_sentence_list)
     
     if 'pos' in args.tasks:
+        counter = 0
         print('Running POS tagging...')
         pos = CkipPosTagger(level=args.pos_model_level, device=args.device)
-        pos_sentence_list = pos(word_sentence_list, batch_size=batch_size, max_length=max_length, use_delim=True)
-        save_output(out_path_base.joinpath('pos.json'), pos_sentence_list)
+
+        for c in tqdm(chunk(word_sentence_list, args.split_file_chunks), total=tqdm_total, desc="Chunk"):
+            pos_sentence_list = pos(c, batch_size=batch_size, max_length=max_length, use_delim=True)
+            save_output(out_path_base.joinpath(f'pos_{counter}.json'), pos_sentence_list)
+            counter += 1
 
     del word_sentence_list
     del pos_sentence_list
 
     if 'ner' in args.tasks:
+        counter = 0
         print('Running NER...')
         ner = CkipNerChunker(level=args.ner_model_level, device=args.device)
-        entity_sentence_list = ner(sents, batch_size=batch_size, max_length=max_length, use_delim=True)
-        save_output(out_path_base.joinpath('entity.json'), entity_sentence_list)
+
+        for c in tqdm(chunk(word_sentence_list, args.split_file_chunks), total=tqdm_total, desc="Chunk"):
+            entity_sentence_list = ner(c, batch_size=batch_size, max_length=max_length, use_delim=True)
+            save_output(out_path_base.joinpath(f'entity_{counter}.json'), entity_sentence_list)
+            counter += 1
     
 
 
