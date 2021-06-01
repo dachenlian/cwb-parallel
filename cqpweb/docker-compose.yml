@@ -3,6 +3,26 @@ services:
     cqpweb:
         build: .
         container_name: "cqpweb"
-        ports: 
-            - "5000:5000"
+        volumes:
+            - registry-vol:/app/cwb/registry
+            - data-vol:/app/cwb/data
+            - tmp-vol:/app/cwb/tmp
+            - uploads-vol:/app/cwb/uploads
         tty: true
+    apache:
+        build:
+            context: .
+            dockerfile: Dockerfile-apache
+        ports: 
+            - "5000:80"
+        volumes:
+            - registry-vol:/app/cwb/registry
+            - data-vol:/app/cwb/data
+            - tmp-vol:/app/cwb/tmp
+            - uploads-vol:/app/cwb/uploads
+volumes:
+    registry-vol:
+    data-vol:
+    tmp-vol:
+    uploads-vol:
+    
