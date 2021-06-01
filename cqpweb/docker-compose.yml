@@ -1,0 +1,8 @@
+version: "3.9"
+services:
+    cqpweb:
+        build: .
+        container_name: "cqpweb"
+        ports: 
+            - "5000:5000"
+        tty: true
