@@ -5,5 +5,4 @@ libpcre3 libpcre3-dev libreadline6-dev build-essential -y --no-install-recommend
 COPY . /app
 WORKDIR /app/cwb-3.4.22/
 RUN ./install-scripts/install-linux
-# RUN make clean && make depend && make all && make install && make realclean
 
