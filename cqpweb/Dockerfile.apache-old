@@ -6,8 +6,6 @@ libpcre3 libpcre3-dev perl libreadline6-dev build-essential -y --no-install-reco
 RUN docker-php-source extract \
 && docker-php-ext-install -j$(nproc) gd intl mysqli zlib bz2 \
 && docker-php-source delete
-WORKDIR /usr/local/lib/php/extensions
-RUN /usr/local/bin/phpize
 COPY CQPweb-3.2.43 /var/www/html
 COPY conf/my-httpd.conf /etc/apache2/apache2.conf
 COPY conf/php.ini-production "$PHP_INI_DIR/php.ini"

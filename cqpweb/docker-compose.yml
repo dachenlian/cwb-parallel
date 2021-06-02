@@ -13,7 +13,7 @@ services:
     php-apache:
         build:
             context: .
-            dockerfile: Dockerfile-apache
+            dockerfile: Dockerfile.apache
         container_name: "cqpweb"
         ports: 
             - "5000:80"
