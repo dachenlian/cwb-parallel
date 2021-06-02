@@ -1,3 +1,0 @@
-FROM php:7.4-apache
-COPY CQPweb-3.2.43 /var/www/html
-COPY my-httpd.conf /etc/apache2/apache2.conf
