@@ -288,3 +288,5 @@ modules.xml
 **/tm
 **/mm
 **/notebooks
+**/conf/config.inc.php
+**/conf/environment.php
