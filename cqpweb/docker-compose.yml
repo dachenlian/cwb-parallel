@@ -1,28 +1,27 @@
 version: "3.9"
 services:
-    cwb:
+    # cwb:
+    #     build: .
+    #     container_name: "cwb"
+    #     volumes:
+    #         - registry-vol:/app/cwb/registry
+    #         - data-vol:/app/cwb/data
+    #         - tmp-vol:/app/cwb/tmp
+    #         - uploads-vol:/app/cwb/uploads
+    #         - cwb-vol:/usr/local/cwb-3.4.22/bin
+    #     tty: true
+    cqpweb:
         build: .
-        container_name: "cwb"
-        volumes:
-            - registry-vol:/app/cwb/registry
-            - data-vol:/app/cwb/data
-            - tmp-vol:/app/cwb/tmp
-            - uploads-vol:/app/cwb/uploads
-            - cwb-vol:/usr/local/cwb-3.4.22/bin
-        tty: true
-    php-apache:
-        build:
-            context: .
-            dockerfile: Dockerfile.apache
         container_name: "cqpweb"
         ports: 
-            - "5000:80"
+            - "8004:80"
         volumes:
-            - registry-vol:/app/cwb/registry
-            - data-vol:/app/cwb/data
-            - tmp-vol:/app/cwb/tmp
-            - uploads-vol:/app/cwb/uploads
-            - cwb-vol:/usr/local/cwb-3.4.22/bin
+            - cwb-vol:/cwb
+            - cqpweb-vol:/usr/local/apache2/htdocs/
+            # - uploads-vol:/app/cwb/uploads
+            - ./conf/my-httpd.conf:/usr/local/apache2/conf/httpd.conf
+            - ./conf/php.ini:/etc/php/7.4/apache2/php.ini
+            - ./data/uploads:/cwb/uploads
         depends_on: 
             - mysql
 
@@ -33,16 +32,12 @@ services:
             - ./conf/mysql.conf.env
         volumes:
             - mysql-vol:/var/lib/mysql
-        # ports:
-        #     - "3306:3306"
+            - ./conf/my.cnf:/etc/mysql/my.cnf
         expose:
             - "3306"
         command:  ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
 volumes:
-    registry-vol:
-    data-vol:
-    tmp-vol:
-    uploads-vol:
     cwb-vol:
     mysql-vol:
+    cqpweb-vol:
     
