@@ -70,7 +70,7 @@ def load(args: Namespace) -> Tuple[List[str], List[str], List[str]]:
 def get_entity(entity_iter: Iterator[List[Tuple[str, str, Tuple[int, int]]]]) -> Tuple[str, int, int]:
     current_entity = next(entity_iter, None)
     if current_entity:
-        entity_name = current_entity[1]
+        entity_name = current_entity[1].lower()
         entity_indices = current_entity[2]
         entity_start = entity_indices[0]
         entity_end = entity_indices[1]
