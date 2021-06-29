@@ -15,6 +15,7 @@ services:
         container_name: "cqpweb"
         ports: 
             - "8004:80"
+        restart: 'always'
         volumes:
             - cwb-vol:/cwb
             - cqpweb-vol:/usr/local/apache2/htdocs/
@@ -28,6 +29,7 @@ services:
     mysql:
         container_name: "mysql"
         image: mysql:8.0
+        restart: 'always'
         env_file:
             - ./conf/mysql.conf.env
         volumes:
